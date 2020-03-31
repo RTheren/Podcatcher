@@ -162,7 +162,7 @@
     <name>PodcastEpisodesChannelInfo</name>
     <message>
         <source>Auto-download</source>
-        <translation type="unfinished"></translation>
+        <translation>Загружать автоматически</translation>
     </message>
 </context>
 <context>
@@ -197,7 +197,7 @@
     </message>
     <message>
         <source>Mark as unplayed</source>
-        <translation type="unfinished"></translation>
+        <translation>Снять метку прослушанного</translation>
     </message>
 </context>
 <context>
@@ -259,7 +259,7 @@
     </message>
     <message>
         <source>Unable to add subscription from %1 …</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно добавить подписку от %1 …</translation>
     </message>
 </context>
 <context>
@@ -289,35 +289,35 @@
     <name>SearchPodcasts</name>
     <message>
         <source>Import podcasts from gPodder</source>
-        <translation type="unfinished">Импортировать подкасты из gPodder</translation>
+        <translation>Импортировать подкасты из gPodder</translation>
     </message>
     <message>
         <source>Add URL manually</source>
-        <translation type="unfinished">Добавить URL вручную</translation>
+        <translation>Добавить URL вручную</translation>
     </message>
     <message>
         <source>No podcasts found.</source>
-        <translation type="unfinished"></translation>
+        <translation>Подкасты не найдены.</translation>
     </message>
     <message>
         <source>Search podcasts</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск подкастов</translation>
     </message>
     <message>
         <source>Keyword</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключевое слово</translation>
     </message>
     <message>
         <source>Add new podcast</source>
-        <translation type="unfinished">Новый подкаст</translation>
+        <translation>Новый подкаст</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation type="unfinished">Добавить</translation>
+        <translation>Добавить</translation>
     </message>
     <message>
         <source>Podcast RSS URL</source>
-        <translation type="unfinished">URL RSS-ленты подкаста</translation>
+        <translation>URL RSS-ленты подкаста</translation>
     </message>
 </context>
 <context>
