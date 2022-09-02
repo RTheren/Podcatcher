@@ -23,6 +23,7 @@ import QtQuick.XmlListModel 2.0
 
 Page {
     id: browsePage
+    property var  searchProvider:  searchITunesPodcastsModel.model
 
     allowedOrientations: Orientation.All
 
@@ -54,14 +55,14 @@ Page {
         BusyIndicator  {
             id: loadingIndicator
             anchors.centerIn: parent
-            visible: (searchPodcastsModel.status == XmlListModel.Loading );
-            running: (searchPodcastsModel.status == XmlListModel.Loading );
+            visible: (searchGPodderPodcastsModel.status == XmlListModel.Loading );
+            running: (searchGPodderPodcastsModel.status == XmlListModel.Loading );
             size: BusyIndicatorSize.Large
         }
 
         Item {
             anchors.centerIn: parent;
-            visible: (searchPodcastsModel.status != XmlListModel.Loading &&
+            visible: (searchGPodderPodcastsModel.status != XmlListModel.Loading &&
                       searchWord.focus == false &
                       searchPodcastsList.count == 0);
             Label {
@@ -76,15 +77,15 @@ Page {
             id: searchPageColumn
             anchors.fill: parent
             spacing: Theme.paddingSmall
-                     anchors{
-                         //leftMargin: Theme.horizontalPageMargin
-                         rightMargin: Theme.horizontalPageMargin
-                         bottomMargin: Theme.paddingMedium
-                     }
+            anchors{
+                //leftMargin: Theme.horizontalPageMargin
+                rightMargin: Theme.horizontalPageMargin
+                bottomMargin: Theme.paddingMedium
+            }
 
             PageHeader{
-                   id: searchPageTitle
-                   title: qsTr("Search podcasts")
+                id: searchPageTitle
+                title: qsTr("Search podcasts")
             }
 
             SearchField {
@@ -95,23 +96,45 @@ Page {
 
                 Keys.onReturnPressed: {
                     parent.focus = true;
-                    searchPodcastsModel.source = "http://gpodder.net/search.xml?q=\"" + searchWord.text+"\"";
+                    searchGPodderPodcastsModel.source = "http://gpodder.net/search.xml?q=\"" + searchWord.text+"\"";
+                    searchITunesPodcastsModel.source =  "https://itunes.apple.com/search?media=podcast&term="+encodeURIComponent(searchWord.text);
 
                 }
 
                 EnterKey.enabled: text.length > 0
                 EnterKey.iconSource: "image://theme/icon-m-search"
             }
+            ComboBox{
+                id: cbSearchProvider
+                width:parent.width
+//                anchors.top: searchWord.bottom
+//                anchors.topMargin: Theme.paddingSmall
+                label: qsTr("Search at")
+                menu: ContextMenu{
+                    MenuItem{text: qsTr("gPodder")
+                        onClicked: {
+                            searchProvider = searchGPodderPodcastsModel;
+                        }
+                    }
+                    MenuItem{text: qsTr("Apple")
+                        onClicked: {
+                            searchProvider = searchITunesPodcastsModel.model;
+                        }
+                    }
+                }
+            }
 
             SilicaListView {
                 id: searchPodcastsList
-                model: searchPodcastsModel
+                //model: searchGPodderPodcastsModel
+                model: searchProvider
                 width: parent.width
-                height: parent.height - searchWord.height - searchPageTitle.height - 2*Theme.paddingSmall - Theme.paddingMedium
-                anchors.horizontalCenter: parent.horizontalCenter
+                height: parent.height - searchWord.height - searchPageTitle.height-cbSearchProvider.height - 3*Theme.paddingSmall - Theme.paddingMedium
+                //anchors.horizontalCenter: parent.horizontalCenter
+                //anchors.top: cbSearchProvider.bottom
                 clip: true
                 visible: false
-                spacing: Theme.paddingMedium
+                spacing:0// Theme.paddingMedium
 
                 delegate:
                     ListItem {
@@ -122,11 +145,12 @@ Page {
 
                     Image {
                         id: channelLogo;
-                        source: logo
+                        source: model.logo?model.logo:model.artworkUrl100
+                        //source: artworkUrl100
                         anchors.left: parent.left
                         anchors.verticalCenter: parent.verticalCenter
-                        width:  parent.width/5;
-                        height: parent.width/5;
+                        width:  height
+                        height: Theme.itemSizeLarge;
                         visible: status == Image.Ready
                     }
 
@@ -158,7 +182,8 @@ Page {
 
                         Label {
                             id: channelName;
-                            text: title
+                            text: model.title?model.title:model.collectionName
+                            //text: collectionName
                             //truncationMode: TruncationMode.Fade
                             wrapMode: Text.Wrap
                             verticalAlignment: Text.AlignVCenter
@@ -180,8 +205,8 @@ Page {
                             icon.source: "image://theme/icon-m-add"
 
                             onClicked: {
-                                console.log("Subscribe to podcast with url: " + url)
-                                mainPage.addPodcast(url, logoUrl);
+                                console.log("Subscribe to podcast with url: " + model.url?model.url:model.feedUrl)
+                                mainPage.addPodcast(model.url?model.url:model.feedUrl, model.logoUrl?model.logoUrl:model.artworkUrl100);
                                 pageStack.pop(mainPage);
                             }
                         }
@@ -192,7 +217,8 @@ Page {
                             id: channelUrl;
                             anchors.top: channelName.bottom
                             anchors.topMargin: Theme.paddingSmall
-                            text: url
+                            text: model.url?model.url:model.feedUrl
+                            //text: feedUrl
                             font.pixelSize: Theme.fontSizeTiny
                             color: channelNameItem.highlighted ? Theme.highlightColor : Theme.secondaryColor
                             width: parent.width
@@ -204,7 +230,7 @@ Page {
                 //                }
 
                 XmlListModel {
-                    id: searchPodcastsModel
+                    id: searchGPodderPodcastsModel
                     query: "/podcasts/podcast"
 
                     XmlRole { name: "logo"; query: "logo_url/string()" }
@@ -214,9 +240,15 @@ Page {
 
                     onStatusChanged: {
                         console.log("XML loading status changed: " + status);
-                        console.log("XML error: " + searchPodcastsModel.errorString());
+                        console.log("XML error: " + searchGPodderPodcastsModel.errorString());
                     }
                 }
+
+                JSONListModel{
+                    id: searchITunesPodcastsModel
+                    query: "$..results[*]"
+                }
+
 
                 VerticalScrollDecorator{}
             }
@@ -228,7 +260,7 @@ Page {
 
         states: [
             State {
-                name: 'searchLoaded'; when: searchPodcastsModel.status == XmlListModel.Ready
+                name: 'searchLoaded'; when: searchGPodderPodcastsModel.status == XmlListModel.Ready
                 PropertyChanges {
                     target: searchPodcastsList
                     visible: true
