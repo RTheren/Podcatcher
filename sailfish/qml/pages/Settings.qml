@@ -25,7 +25,7 @@ Dialog {
 
     property variant downloadNumbers: ['1', '5', '0'];
     property variant keepDays: ['5', '10', '0'];
-    property variant players: ['', '/usr/bin/jolla-mediaplayer', '/usr/bin/harbour-unplayer', 'internal']
+    property variant players: ['', /*'/usr/bin/jolla-mediaplayer', '/usr/bin/harbour-unplayer',*/ 'internal']
 
     allowedOrientations: Orientation.All
 
@@ -163,6 +163,7 @@ Dialog {
                         text: qsTr("System Default")
                     }
 
+                    /* Sailjail doesn't allow starting other apps directly
                     MenuItem{
                         text: qsTr("Jolla Mediaplayer")
                     }
@@ -170,9 +171,10 @@ Dialog {
                     MenuItem{
                         text: qsTr("Unplayer")
                     }
+                    */
 
                     MenuItem{
-                        text: qsTr("Internal Player (Beta)")
+                        text: qsTr("Internal Player")
                     }
                 }
             }
