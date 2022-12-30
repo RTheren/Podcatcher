@@ -15,7 +15,11 @@ Item {
     property ListModel model : ListModel { id: jsonModel }
     property alias count: jsonModel.count
 
+    property bool ready: false
+
     onSourceChanged: {
+        ready = false;
+        console.log("Querying "+source);
         var xhr = new XMLHttpRequest;
         xhr.open("GET", source);
         xhr.onreadystatechange = function() {
@@ -40,6 +44,7 @@ Item {
             //console.log(jo.collectionName);
             jsonModel.append( jo );
         }
+        ready = true;
     }
 
     function parseJSONString(jsonString, jsonPathQuery) {
