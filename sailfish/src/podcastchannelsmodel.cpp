@@ -52,6 +52,9 @@ PodcastChannelsModel::PodcastChannelsModel(QObject *parent) :
         connect(channel, SIGNAL(sortDescendingChanged(bool)),
                 this, SLOT(onSortDescendingChanged(bool)));
 
+        connect(channel, SIGNAL(urlChanged(QString)),
+                this, SLOT(onUrlChanged(QString)));
+
         m_channels << channel;
     }
 }
@@ -133,6 +136,15 @@ bool PodcastChannelsModel::addChannel(PodcastChannel *channel)
 
          connect(channel, SIGNAL(channelChanged()),
                  this, SLOT(onChannelChanged()));
+
+         connect(channel, SIGNAL(sortByChanged(QString)),
+                 this, SLOT(onSortByChanged(QString)));
+
+         connect(channel, SIGNAL(sortDescendingChanged(bool)),
+                 this, SLOT(onSortDescendingChanged(bool)));
+
+         connect(channel, SIGNAL(urlChanged(QString)),
+                 this, SLOT(onUrlChanged(QString)));
 
          return true;
      } else {
@@ -234,6 +246,18 @@ void PodcastChannelsModel::onSortDescendingChanged(bool /*descending*/)
 
     m_sqlmanager->updateChannelInDB(channel);
 }
+
+void PodcastChannelsModel::onUrlChanged(QString url)
+{
+    auto *channel  = qobject_cast<PodcastChannel *>(sender());
+    if (channel == nullptr) {
+        return;
+    }
+
+    qDebug() << "saving new URL to DB:" << url;
+    m_sqlmanager->updateChannelInDB(channel);
+}
+
 
 void PodcastChannelsModel::setAutoDownloadToDB(bool autoDownload)
 {

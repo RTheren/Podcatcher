@@ -67,6 +67,7 @@ private slots:
     void onChannelChanged();
     void onSortByChanged(const QString &sortBy);
     void onSortDescendingChanged(bool sortDescending);
+    void onUrlChanged(QString url);
 
 private:
     explicit PodcastChannelsModel(QObject *parent = nullptr);  // Do not allow instantiation of this class...
