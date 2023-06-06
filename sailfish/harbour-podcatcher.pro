@@ -12,7 +12,7 @@
 # The name of your application
 TARGET = harbour-podcatcher
 
-DEFINES += PODCATCHER_VERSION=200
+DEFINES += PODCATCHER_VERSION=201
 QT += sql xml concurrent
 
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
@@ -181,7 +181,6 @@ TRANSLATIONS += translations/harbour-podcatcher-de.ts \
 
 
 DISTFILES += \
-    #qml/MediaKeys.qml \
     qml/Utils.js \
     qml/EmptyPage.qml \
     qml/PodcatcherInfoBanner.qml \
@@ -200,6 +199,8 @@ DISTFILES += \
     qml/pages/About.qml \
     qml/pages/Settings.qml \
     qml/pages/URLEditDialog.qml \
+    qml/pages/JSONListModel.qml \
+    qml/pages/jsonpath.js \
     harbour-podcatcher.desktop \
     rpm/harbour-podcatcher.spec \
     rpm/harbour-podcatcher.yaml \
