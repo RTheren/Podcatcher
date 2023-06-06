@@ -42,7 +42,11 @@ Page {
             searchPodcastsList.model = Qt.binding(function() {return searchGPodderPodcastsModel});
             searchSuccessfull = Qt.binding(function(){return searchGPodderPodcastsModel.status == XmlListModel.Ready})
         } else if(cbSearchProvider.value == qsTr("Apple")){
-            var country = Qt.locale().name.split('_')[1].toLowerCase();
+            var loc_split = Qt.locale().name.split('_');
+            var country = "us";
+            if (loc_split.length >1){
+                 country= loc_split[1].toLowerCase();
+             }
             searchITunesPodcastsModel.source =  "https://itunes.apple.com/search?media=podcast&country="+country+"&term="+encodeURIComponent(searchTerm);
             searchPodcastsList.model = Qt.binding(function() {return searchITunesPodcastsModel.model});
             searchSuccessfull = Qt.binding(function() {return searchITunesPodcastsModel.ready});
@@ -126,7 +130,7 @@ Page {
 
                 Keys.onReturnPressed: {
                     parent.focus = true;
-                    //searchGPodderPodcastsModel.source = "http://gpodder.net/search.xml?q=\"" + searchWord.text+"\"";
+                    //searchGPodderPodcastsModel.source = "http://gpodder.net/search.opml?q=\"" + searchWord.text+"\"";
                     searchTerm = searchWord.text
                 }
 
