@@ -313,7 +313,7 @@
     </message>
     <message>
         <location filename="../qml/pages/PodcastEpisodes.qml" line="71"/>
-        <source>Mark all espiodes as finished</source>
+        <source>Mark all episodes as finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

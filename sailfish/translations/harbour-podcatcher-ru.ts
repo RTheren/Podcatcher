@@ -266,7 +266,7 @@
         <translation>Получение списка новых выпусков...</translation>
     </message>
     <message>
-        <source>Mark all espiodes as finished</source>
+        <source>Mark all episodes as finished</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
