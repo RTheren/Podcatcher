@@ -591,7 +591,7 @@
     </message>
     <message>
         <location filename="../qml/pages/Settings.qml" line="153"/>
-        <source>Save epsiodes on SD card</source>
+        <source>Save episodes on SD card</source>
         <translation>Folgen auf SD-Karte speichern</translation>
     </message>
     <message>
